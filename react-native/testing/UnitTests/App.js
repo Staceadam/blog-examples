@@ -1,30 +1,15 @@
-import React, { useEffect } from 'react'
+import * as React from 'react'
+import { View, SafeAreaView } from 'react-native'
 
-const axios = require('axios')
-
-import {
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View
-} from 'react-native'
+import Header from './components/Header'
+import Form from './components/Form'
 
 const App = () => {
-  useEffect(() => {
-    const getPosts = async () => {
-      return await axios.get('https://jsonplaceholder.typicode.com/posts')
-    }
-    getPosts()
-  }, [])
-  const isDarkMode = useColorScheme() === 'dark'
-
   return (
     <SafeAreaView>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View>
-        <Text>Hello</Text>
+      <View style={{ padding: 12 }}>
+        <Header title="testing" />
+        <Form />
       </View>
     </SafeAreaView>
   )
