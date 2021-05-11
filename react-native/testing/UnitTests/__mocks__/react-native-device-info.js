@@ -1,2 +1,2 @@
-export const getDeviceId = jest.fn(() => 'test')
-export const getApplicationName = jest.fn(() => 'test')
+export const getDeviceId = jest.fn(() => 'iPhone')
+export const getApplicationName = jest.fn(() => 'UnitTests')
