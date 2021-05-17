@@ -2,18 +2,17 @@ import React from 'react'
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native'
 import { useForm, useController } from 'react-hook-form'
 
-function Input({ name, control, rules }) {
-  const { field } = useController({
+function Input({ name, control, rules, ...rest }) {
+  const { field, fieldState } = useController({
     control,
     name,
-    rules: {
-      required: true
-    }
+    rules
   })
 
   return (
     <TextInput
-      style={styles.input}
+      {...rest}
+      style={[styles.input, fieldState.error && { borderColor: 'red' }]}
       value={field.value}
       onChangeText={field.onChange}
       placeholder={name}
@@ -31,7 +30,12 @@ function HookValidationForm() {
   return (
     <View style={styles.container}>
       <Input name="name" control={control} rules={{ required: true }} />
-      <Input name="age" control={control} rules={{ required: true }} />
+      <Input
+        keyboardType="numeric"
+        name="age"
+        control={control}
+        rules={{ required: true, validate: value => value >= 18 }}
+      />
       <Button title="submit" onPress={handleSubmit(onSubmit)} />
     </View>
   )

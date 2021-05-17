@@ -2,7 +2,7 @@ import React from 'react'
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native'
 import { useForm, useController } from 'react-hook-form'
 
-function Input({ name, control }) {
+function Input({ name, control, ...rest }) {
   const { field } = useController({
     control,
     name
@@ -10,6 +10,7 @@ function Input({ name, control }) {
 
   return (
     <TextInput
+      {...rest}
       style={styles.input}
       value={field.value}
       onChangeText={field.onChange}
@@ -28,7 +29,7 @@ function HookForm() {
   return (
     <View style={styles.container}>
       <Input name="name" control={control} />
-      <Input name="age" control={control} />
+      <Input name="age" control={control} keyboardType="numeric" />
       <Button title="submit" onPress={handleSubmit(onSubmit)} />
     </View>
   )

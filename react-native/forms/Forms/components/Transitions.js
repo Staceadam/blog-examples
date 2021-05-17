@@ -1,15 +1,8 @@
-import React, { forwardRef, createRef } from 'react'
-import {
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  Alert,
-  KeyboardAvoidingView
-} from 'react-native'
+import React, { forwardRef, useRef } from 'react'
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native'
 import { useForm, useController } from 'react-hook-form'
 
-const Input = forwardRef(({ name, control, nextRef }, ref) => {
+const Input = forwardRef(({ name, control, ...rest }, ref) => {
   const { field } = useController({
     control,
     name
@@ -17,15 +10,8 @@ const Input = forwardRef(({ name, control, nextRef }, ref) => {
 
   return (
     <TextInput
+      {...rest}
       ref={ref}
-      onSubmitEditing={() => {
-        if (nextRef.current.props?.onPress()) {
-          nextRef.current.props.onPress()
-        } else {
-          nextRef.current.focus()
-        }
-      }}
-      //   onSubmitEditing={() => { console.log('this is next ref', nextRef) nextRef.current.focus()}}
       style={styles.input}
       value={field.value}
       onChangeText={field.onChange}
@@ -36,8 +22,8 @@ const Input = forwardRef(({ name, control, nextRef }, ref) => {
 
 function Transitions() {
   const { control, handleSubmit } = useForm()
-  const ageInput = createRef()
-  const buttonInput = createRef()
+  const ageInput = useRef()
+  const buttonInput = useRef()
 
   const onSubmit = data => {
     Alert.alert('Form Submitted!', JSON.stringify(data), [{ text: 'OK' }])
@@ -45,12 +31,18 @@ function Transitions() {
 
   return (
     <View style={styles.container}>
-      <Input name="name" nextRef={ageInput} control={control} />
+      <Input
+        name="name"
+        control={control}
+        returnKeyType="next"
+        onSubmitEditing={() => ageInput.current.focus()}
+      />
       <Input
         ref={ageInput}
-        nextRef={buttonInput}
         name="age"
         control={control}
+        returnKeyType="done"
+        onSubmitEditing={() => buttonInput.current.props.onPress()}
       />
       <Button
         ref={buttonInput}
